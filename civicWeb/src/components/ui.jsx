@@ -2,6 +2,7 @@ import { cva } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
 
 /** Utilities */
+// eslint-disable-next-line react-refresh/only-export-components
 export function cn(...inputs) {
   return twMerge(inputs);
 }

@@ -47,8 +47,8 @@ class ComplaintRepository {
     final response = await _apiClient.get<Map<String, dynamic>>(
       '/api/complaints',
       queryParameters: {
-        if (category != null) 'category': category,
-        if (status != null) 'status': status,
+        'category': ?category,
+        'status': ?status,
         'page': page,
         'limit': limit,
         'sortBy': 'createdAt',
@@ -112,8 +112,8 @@ class ComplaintRepository {
         if (description.isNotEmpty) 'description': description,
         'lat': lat,
         'lng': lng,
-        if (imageUrl != null) 'imageUrl': imageUrl,
-        if (voiceNoteUrl != null) 'voiceNoteUrl': voiceNoteUrl,
+        'imageUrl': ?imageUrl,
+        'voiceNoteUrl': ?voiceNoteUrl,
       },
     );
 
@@ -235,7 +235,7 @@ class ComplaintRepository {
       'signature': signature,
       'folder': folder,
       'upload_preset': uploadPreset,
-      if (allowedFormats != null) 'allowed_formats': allowedFormats,
+      'allowed_formats': ?allowedFormats,
       // Cloudinary uses 'video' resource_type for audio files
       'resource_type': 'video',
     });

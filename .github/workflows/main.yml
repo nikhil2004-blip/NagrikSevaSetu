@@ -1,0 +1,93 @@
+name: NagrikSevaSetu CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # ---------------------------------------------------------
+  # JOB 1: Test, Lint & SonarCloud Analysis
+  # ---------------------------------------------------------
+  analyze-and-test:
+    name: Lint, Test & Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Check out the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Deep fetch is required for SonarCloud to analyze git history properly
+
+      # 2. Setup Node.js (For Backend and Web)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 3. Setup Flutter SDK (For Mobile App)
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # 4. Backend Linting & Testing
+      - name: Install Backend Dependencies
+        working-directory: ./civicBackend
+        run: npm install
+
+      - name: Run Backend Lint
+        working-directory: ./civicBackend
+        run: npm run lint
+
+      - name: Run Backend Tests
+        working-directory: ./civicBackend
+        run: npm run test
+
+      # 5. Web Portal Linting & Testing
+      - name: Install Web Dependencies
+        working-directory: ./civicWeb
+        run: npm install
+
+      - name: Run Web Lint
+        working-directory: ./civicWeb
+        run: npm run lint
+
+      - name: Run Web Tests (Playwright)
+        working-directory: ./civicWeb
+        run: npx playwright install --with-deps && npx playwright test
+
+      # 6. Flutter Linting & Testing
+      - name: Install Flutter Dependencies
+        working-directory: ./civicApp
+        run: flutter pub get
+
+      - name: Run Flutter Analyze
+        working-directory: ./civicApp
+        run: flutter analyze
+
+      - name: Run Flutter Tests
+        working-directory: ./civicApp
+        run: flutter test 
+  # ---------------------------------------------------------
+  # JOB 2: Automated Deployment (Only runs if Job 1 passes)
+  # ---------------------------------------------------------
+  deploy:
+    name: Deploy to Production
+    needs: analyze-and-test
+    runs-on: ubuntu-latest
+    # Only deploy when pushing directly to the 'main' branch, not on Pull Requests
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Trigger Render Deploy (Backend)
+        # Hits the Render Deploy Hook URL to trigger a new build
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        
+      - name: Trigger Vercel Deploy (Web Portal)
+        # Hits the Vercel Deploy Hook URL to trigger a new build
+        run: curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}

@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           await Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (_, __, ___) => SubmitComplaintScreen(
+              pageBuilder: (_, _, _) => SubmitComplaintScreen(
                 initialCategory: savedCategory,
                 recoveredDesc: savedDesc,
                 recoveredImage: File(response.file!.path),
@@ -721,7 +721,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             width: 64,
                             height: 64,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) =>
+                            errorBuilder: (_, _, _) =>
                                 _buildAvatarFallback(userProfile?.name ?? 'U'),
                           )
                         : _buildAvatarFallback(userProfile?.name ?? 'U'),

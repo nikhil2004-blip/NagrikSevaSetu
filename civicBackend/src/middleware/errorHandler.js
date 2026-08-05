@@ -26,7 +26,7 @@
  * IMPORTANT: Must have 4 parameters (err, req, res, next) for Express to
  * recognize it as an error handler.
  */
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, _next) => {
   // Log every error server-side for debugging
   console.error(`[ERROR] ${req.method} ${req.path}:`, err);
 

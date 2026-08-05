@@ -63,6 +63,8 @@ const getUploadSignature = (req, res, next) => {
     };
     if (uploadType === 'audio') {
       paramsToSign.allowed_formats = allowedAudioFormats;
+    } else {
+      paramsToSign.allowed_formats = allowedImageFormats;
     }
 
     const signature = cloudinary.utils.api_sign_request(
@@ -82,7 +84,7 @@ const getUploadSignature = (req, res, next) => {
         uploadType,
         resourceType: uploadType === 'audio' ? AUDIO_RESOURCE_TYPE : 'image',
         maxFileSizeBytes: uploadType === 'audio' ? MAX_AUDIO_BYTES : undefined,
-        allowedFormats: uploadType === 'audio' ? allowedAudioFormats : undefined,
+        allowedFormats: uploadType === 'audio' ? allowedAudioFormats : allowedImageFormats,
       },
     });
   } catch (error) {

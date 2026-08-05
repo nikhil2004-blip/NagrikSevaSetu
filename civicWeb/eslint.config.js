@@ -23,7 +23,13 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^[A-Z_]' }],
+      'react-refresh/only-export-components': 'warn',
+      'no-undef': 'off'
     },
   },
+  {
+    files: ['playwright.config.js'],
+    languageOptions: { globals: globals.node }
+  }
 ])

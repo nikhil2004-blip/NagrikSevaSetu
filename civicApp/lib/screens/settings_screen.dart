@@ -9,7 +9,7 @@ import '../providers/auth_provider.dart';
 import '../providers/theme_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -78,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               width: 56,
                               height: 56,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
+                              errorBuilder: (_, _, _) => Container(
                                 width: 56,
                                 height: 56,
                                 color: Colors.white.withOpacity(0.2),

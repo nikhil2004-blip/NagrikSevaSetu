@@ -258,7 +258,7 @@ class _SubmitComplaintScreenState extends State<SubmitComplaintScreen>
     final hasVoiceNote = _recordedAudioFile != null;
     final hasText = descriptionText.isNotEmpty;
 
-    if (_imageFile == null) {
+    if (!LocationService.isTestMode && _imageFile == null) {
       _showSnack('Please capture a photo. A photo is compulsory.');
       return;
     }

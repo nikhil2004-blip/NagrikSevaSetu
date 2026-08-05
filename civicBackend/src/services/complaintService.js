@@ -229,7 +229,7 @@ const toggleUpvote = async (dbUser, id) => {
         type: 'upvote',
         message: 'Your complaint received a new upvote.',
       });
-    } catch (err) {
+    } catch (_err) {
       upvotes = complaint.upvotes;
     }
   }

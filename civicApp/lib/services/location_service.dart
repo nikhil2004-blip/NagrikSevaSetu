@@ -2,7 +2,24 @@
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
+  static bool isTestMode = false;
+
   Future<Position> getCurrentLocation() async {
+    if (isTestMode) {
+      return Position(
+        longitude: 72.5714,
+        latitude: 23.0225,
+        timestamp: DateTime.now(),
+        accuracy: 1.0,
+        altitude: 0.0,
+        altitudeAccuracy: 1.0,
+        heading: 0.0,
+        headingAccuracy: 1.0,
+        speed: 0.0,
+        speedAccuracy: 1.0,
+      );
+    }
+
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw Exception('Location services are disabled.');

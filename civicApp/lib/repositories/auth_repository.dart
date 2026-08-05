@@ -39,7 +39,7 @@ class AuthRepository {
       data: {
         'name': name,
         'email': email,
-        if (phone != null) 'phone': phone,
+        'phone': ?phone,
       },
     );
 

@@ -1,4 +1,4 @@
-import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom'
+import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Building2, BarChart3, ClipboardList, LogOut, Lock, Building } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import { cn } from '../components/ui.jsx'
@@ -25,10 +25,8 @@ function mobileNavClass(isActive, forceActive = false) {
 
 export default function AppLayout() {
   const navigate  = useNavigate()
-  const location  = useLocation()
   const { user, isAuthenticated, logout } = useAuth()
 
-  const isOnDeptPage = location.pathname.startsWith('/department/') && !location.pathname.endsWith('/dashboard')
 
   const handleLogout = async () => {
     await logout()

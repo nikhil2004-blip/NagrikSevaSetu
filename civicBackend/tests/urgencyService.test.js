@@ -210,7 +210,8 @@ describe('urgencyService — transcribeVoiceNote()', () => {
     const fakeAudioBuffer = Buffer.from('fake-audio-data');
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      arrayBuffer: async () => fakeAudioBuffer.buffer,
+      headers: { get: () => '15' },
+      body: [fakeAudioBuffer],
     });
     mockTranscribe.mockResolvedValueOnce({
       text: 'The road is completely flooded near my house.',
@@ -226,7 +227,8 @@ describe('urgencyService — transcribeVoiceNote()', () => {
     const fakeAudioBuffer = Buffer.from('fake-audio-data');
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      arrayBuffer: async () => fakeAudioBuffer.buffer,
+      headers: { get: () => '15' },
+      body: [fakeAudioBuffer],
     });
     mockTranscribe.mockResolvedValueOnce('Direct string transcript.');
 
@@ -253,7 +255,8 @@ describe('urgencyService — transcribeVoiceNote()', () => {
     const fakeAudioBuffer = Buffer.from('fake-audio-data');
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      arrayBuffer: async () => fakeAudioBuffer.buffer,
+      headers: { get: () => '15' },
+      body: [fakeAudioBuffer],
     });
     mockTranscribe.mockRejectedValueOnce(new Error('Whisper model error'));
 
@@ -291,7 +294,8 @@ describe('urgencyService — detectAndUpdateUrgency()', () => {
     const fakeAudioBuffer = Buffer.from('fake-audio-data');
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      arrayBuffer: async () => fakeAudioBuffer.buffer,
+      headers: { get: () => '15' },
+      body: [fakeAudioBuffer],
     });
     mockTranscribe.mockResolvedValueOnce({ text: 'Road is broken and dangerous' });
     mockCreate.mockResolvedValueOnce(mockGroqResponse('Medium'));

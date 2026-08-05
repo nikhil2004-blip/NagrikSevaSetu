@@ -26,6 +26,9 @@ import { toast } from '../utils/toast.js'
 
 const PAGE_SIZE = 20
 
+// Urgency priority order for client-side sort (High first)
+const URGENCY_ORDER = { High: 0, Medium: 1, Low: 2 }
+
 export default function DepartmentDashboard() {
   const { deptId } = useParams()
   const { user }   = useAuth()
@@ -46,9 +49,6 @@ export default function DepartmentDashboard() {
     if (user?.role === 'department_staff' && user?.deptCategory) return user.deptCategory
     return deptId
   }, [user, deptId])
-
-  // Urgency priority order for client-side sort (High first)
-  const URGENCY_ORDER = { High: 0, Medium: 1, Low: 2 }
 
   const fetchComplaints = useCallback(async () => {
     if (!targetDept) return

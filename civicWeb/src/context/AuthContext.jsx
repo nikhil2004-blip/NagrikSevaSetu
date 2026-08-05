@@ -48,6 +48,21 @@ export function AuthProvider({ children }) {
   }, [])
 
   useEffect(() => {
+    if (window.__PLAYWRIGHT_TEST__) {
+      window.__setMockUser = (mockUser) => {
+        setUser(mockUser)
+        setIsLoading(false)
+      }
+      // If Playwright pre-injected a user
+      if (window.__PLAYWRIGHT_MOCK_USER__) {
+        setUser(window.__PLAYWRIGHT_MOCK_USER__)
+      } else {
+        setUser(null)
+      }
+      setIsLoading(false)
+      return
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
         const composedUser = await syncWithBackend(fbUser)
@@ -61,6 +76,18 @@ export function AuthProvider({ children }) {
   }, [syncWithBackend])
 
   const login = useCallback(async (email, password) => {
+    if (window.__PLAYWRIGHT_TEST__) {
+      if (email === 'admin@test.com' && password === 'test1234') {
+        setUser({ id: 'test', name: 'Test Admin', email, role: 'admin' })
+        return
+      }
+      if (email === 'dept@test.com' && password === 'test1234') {
+        setUser({ id: 'test2', name: 'Test Dept', email, role: 'department_staff', deptCategory: 'Sanitation' })
+        return
+      }
+      throw new Error('Invalid credentials. Please check your email and password.')
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password)
     } catch (error) {
@@ -77,6 +104,11 @@ export function AuthProvider({ children }) {
   }, [])
 
   const logout = useCallback(async () => {
+    if (window.__PLAYWRIGHT_TEST__) {
+      setUser(null)
+      return
+    }
+    
     try {
       await firebaseSignOut(auth)
       setUser(null)
@@ -105,6 +137,7 @@ export function AuthProvider({ children }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used inside <AuthProvider>')

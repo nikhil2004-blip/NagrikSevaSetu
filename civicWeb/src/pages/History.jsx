@@ -17,7 +17,7 @@ import {
   Table, THead, TBody, TR, TH, TD, Badge, Button,
 } from '../components/ui.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
-import { CATEGORIES, STATUSES, URGENCY_LEVELS, urgencyVariant, statusVariant } from '../constants/civic.js'
+import { CATEGORIES, STATUSES, URGENCY_LEVELS } from '../constants/civic.js'
 import { shortDateTime, relativeTime } from '../utils/formatDate.js'
 import { toast } from '../utils/toast.js'
 import {
@@ -139,7 +139,7 @@ export default function History() {
     if (pageSize !== 20)      next.set('limit',    String(pageSize))
     if (search.trim())        next.set('search',   search.trim())
     setParams(next, { replace: true })
-  }, [category, status, urgency, sort, days, page, pageSize, search])
+  }, [category, status, urgency, sort, days, page, pageSize, search, setParams])
 
   // ── Fetch ──────────────────────────────────────────────────
   const fetchHistory = useCallback(async () => {
