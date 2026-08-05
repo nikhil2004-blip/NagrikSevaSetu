@@ -80,6 +80,13 @@ jobs:
       - name: Run Flutter Tests
         working-directory: ./civicApp
         run: flutter test 
+
+      # 7. SonarCloud Analysis
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provided automatically by GitHub
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # You will generate this in SonarCloud
   # ---------------------------------------------------------
   # JOB 2: Automated Deployment (Only runs if Job 1 passes)
   # ---------------------------------------------------------
